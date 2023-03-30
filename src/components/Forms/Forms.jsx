@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { addContact } from 'redux/action';
+import { addContact } from 'redux/contactsSlice';
 import { getContacts } from 'redux/selectors';
 import PropTypes from 'prop-types';
 import {
@@ -31,7 +31,7 @@ export const Forms = () => {
       alert(`${newContact.name} is already in contacts`);
       return;
     }
-    dispatch(addContact(newContact.name, newContact.number));
+    dispatch(addContact(newContact));
   };
   return (
     <FormContainer>

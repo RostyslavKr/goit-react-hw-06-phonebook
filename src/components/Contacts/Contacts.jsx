@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { deleteContact } from 'redux/action';
+import { deleteContact } from 'redux/contactsSlice';
 import { getContacts, getFilterValue } from 'redux/selectors';
 import { WrapperContacts, ItemContact, DeleteButton } from './Contacts.styled';
 
@@ -18,6 +18,7 @@ export const Contacts = () => {
     dispatch(deleteContact(id));
   };
   const visibleContacts = getVisibleContacts(contacts, value);
+
   return (
     <WrapperContacts>
       <ul>

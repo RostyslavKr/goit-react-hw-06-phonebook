@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { filterContact } from 'redux/action';
+import { filterContact } from 'redux/filterSlice';
 import {
   ContainerFilterInput,
   TitleFilter,
