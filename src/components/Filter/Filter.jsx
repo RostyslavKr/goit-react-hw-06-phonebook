@@ -1,27 +1,30 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { filterContact } from 'redux/action';
 import {
   ContainerFilterInput,
   TitleFilter,
   FilterInput,
 } from './Filter.styled';
 
-export const Filter = ({ value, onChange }) => (
-  <ContainerFilterInput>
-    <ContainerFilterInput htmlFor="name">
-      <TitleFilter>Find contacts by name</TitleFilter>
-      <FilterInput
-        autoComplete="off"
-        type="text"
-        name="name"
-        value={value}
-        onChange={onChange}
-      />
-    </ContainerFilterInput>
-  </ContainerFilterInput>
-);
+export const Filter = () => {
+  const dispatch = useDispatch();
 
-Filter.protoTypes = {
-  value: PropTypes.string,
-  onChange: PropTypes.func,
+  const handleChange = e => {
+    const value = e.target.value;
+    dispatch(filterContact(value));
+  };
+
+  return (
+    <ContainerFilterInput>
+      <ContainerFilterInput htmlFor="name">
+        <TitleFilter>Find contacts by name</TitleFilter>
+        <FilterInput
+          autoComplete="off"
+          type="text"
+          name="name"
+          onChange={handleChange}
+        />
+      </ContainerFilterInput>
+    </ContainerFilterInput>
+  );
 };

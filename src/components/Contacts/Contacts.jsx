@@ -1,16 +1,31 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { deleteContact } from 'redux/action';
+import { getContacts, getFilterValue } from 'redux/selectors';
 import { WrapperContacts, ItemContact, DeleteButton } from './Contacts.styled';
 
-export const Contacts = ({ contacts, onDeleteContact }) => {
+const getVisibleContacts = (contacts, value) => {
+  return contacts.filter(contact =>
+    contact.name.toLowerCase().includes(value.toLowerCase())
+  );
+};
+
+export const Contacts = () => {
+  const contacts = useSelector(getContacts);
+  const value = useSelector(getFilterValue);
+  const dispatch = useDispatch();
+  const handleDelete = id => {
+    dispatch(deleteContact(id));
+  };
+  const visibleContacts = getVisibleContacts(contacts, value);
   return (
     <WrapperContacts>
       <ul>
-        {contacts.length > 0 &&
-          contacts.map(contact => (
+        {visibleContacts.length > 0 &&
+          visibleContacts.map(contact => (
             <ItemContact key={contact.id}>
               {contact.name}: {contact.number}
-              <DeleteButton onClick={() => onDeleteContact(contact.id)}>
+              <DeleteButton onClick={() => handleDelete(contact.id)}>
                 Delete
               </DeleteButton>
             </ItemContact>
@@ -18,12 +33,4 @@ export const Contacts = ({ contacts, onDeleteContact }) => {
       </ul>
     </WrapperContacts>
   );
-};
-Contacts.propTypes = {
-  contacts: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  onDeleteContact: PropTypes.func,
 };
