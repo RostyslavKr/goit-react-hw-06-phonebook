@@ -1,28 +1,33 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { nanoid } from 'nanoid';
 
-const contactsInitialState = [
-  {
-    name: 'Sam Winchester',
-    number: '900-76-55',
-    id: 'k5IqQ5Ahn63qrLy9KqFF3',
-  },
-  {
-    name: 'Dean Winchester',
-    number: '999-54-44',
-    id: 'YasMbPqDeoDvLx3jAbDRJ',
-  },
-  {
-    name: 'Boby Singer',
-    number: '777-89-90',
-    id: '4ONaH6pxfNXeHQGgrCPjM',
-  },
-  {
-    name: 'John Winchester',
-    number: '999-87-67',
-    id: 'WTQeI-3j65t5R2EvDw6fB',
-  },
-];
+import { persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+
+const contactsInitialState = {
+  items: [
+    {
+      name: 'Sam Winchester',
+      number: '900-76-55',
+      id: 'k5IqQ5Ahn63qrLy9KqFF3',
+    },
+    {
+      name: 'Dean Winchester',
+      number: '999-54-44',
+      id: 'YasMbPqDeoDvLx3jAbDRJ',
+    },
+    {
+      name: 'Boby Singer',
+      number: '777-89-90',
+      id: '4ONaH6pxfNXeHQGgrCPjM',
+    },
+    {
+      name: 'John Winchester',
+      number: '999-87-67',
+      id: 'WTQeI-3j65t5R2EvDw6fB',
+    },
+  ],
+};
 
 const contactsSlice = createSlice({
   name: 'contacts',
@@ -30,7 +35,7 @@ const contactsSlice = createSlice({
   reducers: {
     addContact: {
       reducer(state, action) {
-        state.push(action.payload);
+        state.items.push(action.payload);
       },
       prepare(user) {
         return {
@@ -39,11 +44,21 @@ const contactsSlice = createSlice({
       },
     },
     deleteContact(state, action) {
-      const index = state.findIndex(contact => contact.id === action.payload);
-      state.splice(index, 1);
+      state.items = state.items.filter(
+        contact => contact.id !== action.payload
+      );
     },
   },
 });
 
+const persistConfig = {
+  key: 'contacts',
+  version: 1,
+  storage,
+};
+
 export const { addContact, deleteContact } = contactsSlice.actions;
-export const contactsReducer = contactsSlice.reducer;
+export const contactsReducer = persistReducer(
+  persistConfig,
+  contactsSlice.reducer
+);

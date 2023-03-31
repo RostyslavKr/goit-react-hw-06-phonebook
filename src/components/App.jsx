@@ -8,7 +8,7 @@ import {
   TitleContacts,
 } from './Container.styled';
 
-export default function App() {
+export const App = () => {
   return (
     <Container>
       <TitlePhonebook>Phonebook</TitlePhonebook>
@@ -20,4 +20,4 @@ export default function App() {
       </ContainerContacts>
     </Container>
   );
-}
+};

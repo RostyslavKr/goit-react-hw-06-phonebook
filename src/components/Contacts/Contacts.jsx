@@ -5,6 +5,9 @@ import { getContacts, getFilterValue } from 'redux/selectors';
 import { WrapperContacts, ItemContact, DeleteButton } from './Contacts.styled';
 
 const getVisibleContacts = (contacts, value) => {
+  if (value === '') {
+    return contacts;
+  }
   return contacts.filter(contact =>
     contact.name.toLowerCase().includes(value.toLowerCase())
   );
@@ -14,9 +17,11 @@ export const Contacts = () => {
   const contacts = useSelector(getContacts);
   const value = useSelector(getFilterValue);
   const dispatch = useDispatch();
+
   const handleDelete = id => {
     dispatch(deleteContact(id));
   };
+
   const visibleContacts = getVisibleContacts(contacts, value);
 
   return (
